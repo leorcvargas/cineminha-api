@@ -55,7 +55,7 @@ defmodule Cineminha.Rooms do
     tomorrow_date = NaiveDateTime.add(current_date, 86400, :second)
 
     attrs = %{
-      slug: generate_random_slug(),
+      slug: generate_random_slug(15),
       expires_at: tomorrow_date
     }
 
@@ -111,11 +111,9 @@ defmodule Cineminha.Rooms do
     Room.changeset(room, attrs)
   end
 
-  defp generate_random_slug do
-    length = 10
-
-    :crypto.strong_rand_bytes(length)
-    |> Base.encode64()
-    |> binary_part(0, length)
+  defp generate_random_slug(count) do
+    :crypto.strong_rand_bytes(count)
+    |> Base.url_encode64(padding: false)
+    |> binary_part(0, count)
   end
 end
