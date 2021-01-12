@@ -12,7 +12,7 @@ use Mix.Config
 config :cineminha, CineminhaWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  url: [host: "https://cineminha-server.herokuapp.com", port: 443],
+  url: [host: "cineminha-server.herokuapp.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
