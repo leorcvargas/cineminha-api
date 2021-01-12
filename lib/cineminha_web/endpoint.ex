@@ -50,7 +50,7 @@ defmodule CineminhaWeb.Endpoint do
   plug Plug.Session, @session_options
 
   plug Corsica,
-    origins: ["http://localhost:3000"],
+    origins: ["http://localhost:3000", "https://cineminha.leovargas.dev"],
     allow_credentials: true,
     allow_headers: :all,
     allow_methods: :all,
