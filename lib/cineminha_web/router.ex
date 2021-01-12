@@ -7,6 +7,8 @@ defmodule CineminhaWeb.Router do
 
   scope "/api", CineminhaWeb do
     pipe_through :api
+
+    post "/room", RoomController, :create
   end
 
   # Enables LiveDashboard only for development

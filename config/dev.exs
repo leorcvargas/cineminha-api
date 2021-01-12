@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :cineminha, Cineminha.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "leo",
+  password: "foobar",
   database: "cineminha_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
