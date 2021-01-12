@@ -10,7 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :cineminha, CineminhaWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  http: [port: {:system, "PORT"}],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  url: [host: "https://cineminha-server.herokuapp.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
