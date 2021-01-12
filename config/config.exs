@@ -12,7 +12,7 @@ config :cineminha,
 
 # Configures the endpoint
 config :cineminha, CineminhaWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "cineminha-server.herokuapp.com"],
   secret_key_base: "gHF2eUz14APR001VNYS0bw/VwwHKFrybBo1iADbnbixQRayN3pxC6UG5IiStzvKJ",
   render_errors: [view: CineminhaWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Cineminha.PubSub,
