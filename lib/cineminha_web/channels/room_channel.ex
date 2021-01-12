@@ -11,10 +11,17 @@ defmodule CineminhaWeb.RoomChannel do
     {:ok, response, assign(socket, :room, room)}
   end
 
-  def handle_in("room:video:change", %{"url" => url}, socket) do
+  def handle_in("room:video:change:url", %{"url" => url}, socket) do
     room_slug = socket.assigns.room.slug
 
     broadcast!(socket, "room:#{room_slug}:video:change", %{url: url})
+    {:reply, :ok, socket}
+  end
+
+  def handle_in("room:video:change:time", %{"time" => time}, socket) do
+    room_slug = socket.assigns.room.slug
+
+    broadcast!(socket, "room:#{room_slug}:video:change:time", %{time: time})
     {:reply, :ok, socket}
   end
 end
