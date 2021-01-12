@@ -2,7 +2,7 @@ defmodule CineminhaWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", CineminhaWeb.RoomChannel
+  channel "room:*", CineminhaWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
