@@ -13,7 +13,8 @@ config :cineminha, CineminhaWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   url: [scheme: "https", host: "cineminha-server.herokuapp.com", port: 443],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: ["https://cineminha.leovargas.dev", "//localhost:3000"]
 
 # Do not print debug messages in production
 config :logger, level: :info

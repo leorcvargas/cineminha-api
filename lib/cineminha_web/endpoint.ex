@@ -11,9 +11,8 @@ defmodule CineminhaWeb.Endpoint do
   ]
 
   socket "/socket", CineminhaWeb.UserSocket,
-    websocket: true,
-    longpoll: false,
-    check_origin: ["https://cineminha.leovargas.dev", "//localhost:3000"]
+    websocket: [timeout: 45_000],
+    longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
