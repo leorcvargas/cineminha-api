@@ -14,7 +14,7 @@ config :cineminha, CineminhaWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   url: [scheme: "https", host: "cineminha-api.gigalixirapp.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  check_origin: ["https://cineminha-api.gigalixirapp.com", "//localhost:3000"]
+  check_origin: ["https://cineminha.leovargas.dev", "//localhost:3000"]
 
 # Do not print debug messages in production
 config :logger, level: :info
