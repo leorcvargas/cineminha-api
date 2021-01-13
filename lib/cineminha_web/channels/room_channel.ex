@@ -14,7 +14,7 @@ defmodule CineminhaWeb.RoomChannel do
   def handle_in("room:video:change:url", %{"url" => url}, socket) do
     room_slug = socket.assigns.room.slug
 
-    broadcast!(socket, "room:#{room_slug}:video:change", %{url: url})
+    broadcast!(socket, "room:#{room_slug}:video:change:url", %{url: url})
     {:reply, :ok, socket}
   end
 
