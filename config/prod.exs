@@ -12,7 +12,7 @@ use Mix.Config
 config :cineminha, CineminhaWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  url: [scheme: "https", host: "cineminha-server.herokuapp.com", port: 443],
+  url: [scheme: "https", host: "cineminha-api.gigalixirapp.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
   check_origin: ["https://cineminha-api.gigalixirapp.com", "//localhost:3000"]
 
