@@ -10,7 +10,7 @@ defmodule CineminhaWeb.Endpoint do
     signing_salt: "DJZwOkmU"
   ]
 
-  socket "/socket", CineminhaWeb.UserSocket,
+  socket "/websocket", CineminhaWeb.UserSocket,
     websocket: [timeout: 45_000],
     longpoll: false
 
