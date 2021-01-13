@@ -14,28 +14,34 @@ defmodule CineminhaWeb.RoomChannel do
   def handle_in("room:video:change:url", %{"url" => url}, socket) do
     room_slug = socket.assigns.room.slug
 
-    broadcast!(socket, "room:#{room_slug}:video:change:url", %{url: url})
-    {:reply, :ok, socket}
+    updated_socket = assign(socket, :current_video_url, url)
+
+    broadcast!(updated_socket, "room:#{room_slug}:video:change:url", %{url: url})
+
+    {:reply, :ok, updated_socket}
   end
 
   def handle_in("room:video:change:time", %{"time" => time}, socket) do
     room_slug = socket.assigns.room.slug
 
     broadcast!(socket, "room:#{room_slug}:video:change:time", %{time: time})
+
     {:reply, :ok, socket}
   end
 
-  def handle_in("room:video:play", _payload, socket) do
+  def handle_in("room:video:play", %{"time" => time}, socket) do
     room_slug = socket.assigns.room.slug
 
-    broadcast!(socket, "room:#{room_slug}:video:play", %{})
+    broadcast!(socket, "room:#{room_slug}:video:play", %{time: time})
+
     {:reply, :ok, socket}
   end
 
-  def handle_in("room:video:pause", _payload, socket) do
+  def handle_in("room:video:pause", %{"time" => time}, socket) do
     room_slug = socket.assigns.room.slug
 
-    broadcast!(socket, "room:#{room_slug}:video:pause", %{})
+    broadcast!(socket, "room:#{room_slug}:video:pause", %{time: time})
+
     {:reply, :ok, socket}
   end
 end
