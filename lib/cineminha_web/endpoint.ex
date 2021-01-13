@@ -11,7 +11,7 @@ defmodule CineminhaWeb.Endpoint do
   ]
 
   socket "/socket", CineminhaWeb.UserSocket,
-    websocket: [timeout: 45_000],
+    websocket: true,
     longpoll: false,
     check_origin: ["https://cineminha.leovargas.dev", "//localhost:3000"]
 
