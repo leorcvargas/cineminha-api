@@ -1,8 +1,8 @@
-defmodule Cineminha.Rooms.Video do
+defmodule Cineminha.Rooms.RoomVideo do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "videos" do
+  schema "room_videos" do
     field :url, :string
     belongs_to :room, Cineminha.Rooms.Room
 
@@ -12,7 +12,7 @@ defmodule Cineminha.Rooms.Video do
   @doc false
   def changeset(video, attrs) do
     video
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:url, :room_id])
+    |> validate_required([:url, :room_id])
   end
 end

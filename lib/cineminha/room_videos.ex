@@ -1,4 +1,4 @@
-defmodule Cineminha.Videos do
+defmodule Cineminha.RoomVideos do
   @moduledoc """
   The Videos context.
   """

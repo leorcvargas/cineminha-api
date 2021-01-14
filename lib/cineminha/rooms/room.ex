@@ -5,7 +5,7 @@ defmodule Cineminha.Rooms.Room do
   schema "rooms" do
     field :expires_at, :naive_datetime
     field :slug, :string
-    has_many :videos, Cineminha.Rooms.Video
+    has_many :room_videos, Cineminha.Rooms.RoomVideo
 
     timestamps()
   end
