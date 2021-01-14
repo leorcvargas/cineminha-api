@@ -9,14 +9,21 @@ defmodule Cineminha.Application do
     children = [
       # Start the Ecto repository
       Cineminha.Repo,
+
       # Start the Telemetry supervisor
       CineminhaWeb.Telemetry,
+
       # Start the PubSub system
       {Phoenix.PubSub, name: Cineminha.PubSub},
+
       # Start the Endpoint (http/https)
-      CineminhaWeb.Endpoint
+      CineminhaWeb.Endpoint,
+
       # Start a worker by calling: Cineminha.Worker.start_link(arg)
       # {Cineminha.Worker, arg}
+
+      # Start the Presence module
+      CineminhaWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
