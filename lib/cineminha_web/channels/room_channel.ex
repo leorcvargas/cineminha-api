@@ -10,13 +10,15 @@ defmodule CineminhaWeb.RoomChannel do
     send(self(), :after_join)
 
     response = CineminhaWeb.RoomView.render("room.json", room: room)
+
     {:ok, response, assign(socket, :room, room)}
   end
 
   def handle_info(:after_join, socket) do
-    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-      online_at: inspect(System.system_time(:second))
-    })
+    {:ok, _} =
+      Presence.track(socket, socket.assigns.user_id, %{
+        online_at: inspect(System.system_time(:second))
+      })
 
     push(socket, "presence_state", Presence.list(socket))
 
