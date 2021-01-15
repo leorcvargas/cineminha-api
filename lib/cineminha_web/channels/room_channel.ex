@@ -60,20 +60,26 @@ defmodule CineminhaWeb.RoomChannel do
   end
 
   def handle_in("room:chat:new:message", %{"message" => message}, socket) do
-    room_slug = socket.assigns.room.slug
-    user_id = socket.assigns.user_id
-    user_color = socket.assigns.user_color
+    cond do
+      String.trim(message) == "" or String.length(message) >= 300 ->
+        {:reply, {:error, %{reason: "invalid_message"}}, socket}
 
-    response = %{
-      user_id: user_id,
-      user_color: user_color,
-      message: message,
-      sent_at: inspect(System.system_time(:second))
-    }
+      true ->
+        room_slug = socket.assigns.room.slug
+        user_id = socket.assigns.user_id
+        user_color = socket.assigns.user_color
 
-    broadcast!(socket, "room:#{room_slug}:chat:new:message", response)
+        response = %{
+          user_id: user_id,
+          user_color: user_color,
+          message: message,
+          sent_at: inspect(System.system_time(:second))
+        }
 
-    {:reply, :ok, socket}
+        broadcast!(socket, "room:#{room_slug}:chat:new:message", response)
+
+        {:reply, :ok, socket}
+    end
   end
 
   def handle_in("room:user:set:color", %{"color" => color}, socket) do
