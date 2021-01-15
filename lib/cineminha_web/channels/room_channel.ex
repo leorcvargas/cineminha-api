@@ -17,6 +17,21 @@ defmodule CineminhaWeb.RoomChannel do
   def handle_info(:after_join, socket) do
     {:ok, _} =
       Presence.track(socket, socket.assigns.user_id, %{
+        user_name: socket.assigns[:user_name],
+        user_color: socket.assigns[:user_color],
+        online_at: inspect(System.system_time(:second))
+      })
+
+    push(socket, "presence_state", Presence.list(socket))
+
+    {:noreply, socket}
+  end
+
+  def handle_info(:after_user_change_info, socket) do
+    {:ok, _} =
+      Presence.update(socket, socket.assigns.user_id, %{
+        user_name: socket.assigns[:user_name],
+        user_color: socket.assigns[:user_color],
         online_at: inspect(System.system_time(:second))
       })
 
@@ -66,13 +81,12 @@ defmodule CineminhaWeb.RoomChannel do
 
       true ->
         room_slug = socket.assigns.room.slug
-        user_id = socket.assigns.user_id
-        user_color = socket.assigns[:user_color]
 
         response = %{
-          user_id: user_id,
-          user_color: user_color,
+          user_id: socket.assigns.user_id,
+          user_color: socket.assigns[:user_color],
           message: message,
+          user_name: socket.assigns[:user_name],
           sent_at: inspect(System.system_time(:second))
         }
 
@@ -83,6 +97,18 @@ defmodule CineminhaWeb.RoomChannel do
   end
 
   def handle_in("room:user:set:color", %{"color" => color}, socket) do
-    {:noreply, assign(socket, :user_color, color)}
+    updated_socket = assign(socket, :user_color, color)
+
+    send(self(), :after_user_change_info)
+
+    {:reply, :ok, updated_socket}
+  end
+
+  def handle_in("room:user:set:name", %{"name" => name}, socket) do
+    updated_socket = assign(socket, :user_name, name)
+
+    send(self(), :after_user_change_info)
+
+    {:reply, :ok, updated_socket}
   end
 end

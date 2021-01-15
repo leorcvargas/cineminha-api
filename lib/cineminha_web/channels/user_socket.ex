@@ -20,6 +20,7 @@ defmodule CineminhaWeb.UserSocket do
     updated_socket =
       socket
       |> assign(:user_id, params["user_id"])
+      |> assign(:user_name, params["user_id"])
       |> assign(:user_color, params["user_color"])
 
     {:ok, updated_socket}
