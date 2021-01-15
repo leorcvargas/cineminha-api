@@ -17,7 +17,12 @@ defmodule CineminhaWeb.UserSocket do
   # performing token verification on connect.
   @impl true
   def connect(params, socket, _connect_info) do
-    {:ok, assign(socket, :user_id, params["user_id"])}
+    updated_socket =
+      socket
+      |> assign(:user_id, params["user_id"])
+      |> assign(:user_color, params["user_color"])
+
+    {:ok, updated_socket}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

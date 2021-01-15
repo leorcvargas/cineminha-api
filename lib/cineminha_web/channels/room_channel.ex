@@ -67,7 +67,7 @@ defmodule CineminhaWeb.RoomChannel do
       true ->
         room_slug = socket.assigns.room.slug
         user_id = socket.assigns.user_id
-        user_color = socket.assigns.user_color
+        user_color = socket.assigns[:user_color]
 
         response = %{
           user_id: user_id,
