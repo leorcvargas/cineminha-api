@@ -58,4 +58,25 @@ defmodule CineminhaWeb.RoomChannel do
 
     {:reply, :ok, socket}
   end
+
+  def handle_in("room:chat:new:message", %{"message" => message}, socket) do
+    room_slug = socket.assigns.room.slug
+    user_id = socket.assigns.user_id
+    user_color = socket.assigns.user_color
+
+    response = %{
+      user_id: user_id,
+      user_color: user_color,
+      message: message,
+      sent_at: inspect(System.system_time(:second))
+    }
+
+    broadcast!(socket, "room:#{room_slug}:chat:new:message", response)
+
+    {:reply, :ok, socket}
+  end
+
+  def handle_in("room:user:set:color", %{"color" => color}, socket) do
+    {:noreply, assign(socket, :user_color, color)}
+  end
 end
