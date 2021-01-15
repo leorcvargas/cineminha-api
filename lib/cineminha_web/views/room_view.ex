@@ -5,7 +5,12 @@ defmodule CineminhaWeb.RoomView do
     %{
       id: room.id,
       slug: room.slug,
-      expires_at: room.expires_at,
+      room_videos:
+        case room.room_videos do
+          %Ecto.Association.NotLoaded{} -> []
+          _ -> CineminhaWeb.RoomVideoView.render("index.json", room_videos: room.room_videos)
+        end,
+      expires_at: room.expires_at
     }
   end
 

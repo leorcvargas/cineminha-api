@@ -38,6 +38,12 @@ defmodule Cineminha.Rooms do
 
   def get_room_by_slug(slug), do: Repo.get_by(Room, slug: slug)
 
+  def get_room_and_videos_by_slug(room_slug) do
+    Room
+    |> Repo.get_by(slug: room_slug)
+    |> Repo.preload(:room_videos)
+  end
+
   @doc """
   Creates a room.
 

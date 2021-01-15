@@ -2,16 +2,21 @@ defmodule CineminhaWeb.RoomChannel do
   use CineminhaWeb, :channel
 
   alias Cineminha.Rooms
+  alias Cineminha.RoomVideos
   alias CineminhaWeb.Presence
 
   def join("room:" <> room_slug, _payload, socket) do
-    room = Rooms.get_room_by_slug(room_slug)
+    case Rooms.get_room_and_videos_by_slug(room_slug) do
+      nil ->
+        {:error, %{reason: "Invalid room"}}
 
-    send(self(), :after_join)
+      room ->
+        send(self(), :after_join)
 
-    response = CineminhaWeb.RoomView.render("room.json", room: room)
+        response = CineminhaWeb.RoomView.render("room.json", room: room)
 
-    {:ok, response, assign(socket, :room, room)}
+        {:ok, response, assign(socket, :room_slug, room.slug)}
+    end
   end
 
   def handle_info(:after_join, socket) do
@@ -41,17 +46,26 @@ defmodule CineminhaWeb.RoomChannel do
   end
 
   def handle_in("room:video:change:url", %{"url" => url}, socket) do
-    room_slug = socket.assigns.room.slug
+    room_slug = socket.assigns.room_slug
 
-    updated_socket = assign(socket, :current_video_url, url)
+    case RoomVideos.create_room_video(room_slug, %{url: url}) do
+      {:ok, _} ->
+        room_videos = RoomVideos.list_videos_by_room_slug(room_slug)
 
-    broadcast!(updated_socket, "room:#{room_slug}:video:change:url", %{url: url})
+        room_videos_json =
+          CineminhaWeb.RoomVideoView.render("index.json", room_videos: room_videos)
 
-    {:reply, :ok, updated_socket}
+        broadcast!(socket, "room:#{room_slug}:video:change:url", %{room_videos: room_videos_json})
+
+        {:reply, :ok, socket}
+
+      {:error, reason} ->
+        {:reply, {:error, reason}, socket}
+    end
   end
 
   def handle_in("room:video:change:time", %{"time" => time}, socket) do
-    room_slug = socket.assigns.room.slug
+    room_slug = socket.assigns.room_slug
 
     broadcast!(socket, "room:#{room_slug}:video:change:time", %{time: time})
 
@@ -59,7 +73,7 @@ defmodule CineminhaWeb.RoomChannel do
   end
 
   def handle_in("room:video:play", %{"time" => time}, socket) do
-    room_slug = socket.assigns.room.slug
+    room_slug = socket.assigns.room_slug
 
     broadcast!(socket, "room:#{room_slug}:video:play", %{time: time})
 
@@ -67,7 +81,7 @@ defmodule CineminhaWeb.RoomChannel do
   end
 
   def handle_in("room:video:pause", %{"time" => time}, socket) do
-    room_slug = socket.assigns.room.slug
+    room_slug = socket.assigns.room_slug
 
     broadcast!(socket, "room:#{room_slug}:video:pause", %{time: time})
 
@@ -80,7 +94,7 @@ defmodule CineminhaWeb.RoomChannel do
         {:reply, {:error, %{reason: "invalid_message"}}, socket}
 
       true ->
-        room_slug = socket.assigns.room.slug
+        room_slug = socket.assigns.room_slug
 
         response = %{
           user_id: socket.assigns.user_id,
