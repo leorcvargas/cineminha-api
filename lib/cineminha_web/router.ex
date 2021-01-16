@@ -9,6 +9,8 @@ defmodule CineminhaWeb.Router do
     pipe_through :api
 
     post "/room", RoomController, :create
+
+    get "/room_video/yt", RoomVideoController, :search_on_youtube
   end
 
   # Enables LiveDashboard only for development
